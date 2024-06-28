@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Newsletter api
+
+Parameters:
+
+  TableName:
+    Type: String
+    Description: Name of newsletter Dynamodb table
+
+  DomainName:
+    Type: String
+    Description: The domain name that we want to deploy our api to
+
+  RegionalCertificateArn:
+    Type: String
+    Description: Arn of the regional certificate
+
+Resources:
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+        
+  CustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: !Ref DomainName
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: !Ref RegionalCertificateArn
+      SecurityPolicy: TLS_1_2
+
+  CustomDomainMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref DomainName
+      RestApiId: !Ref ApiGatewayApi
+      Stage: !Ref ApiGatewayApi.Stage
+    DependsOn:
+      - CustomDomain
+  
+  EmailsEndpoint:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/emails
+      Handler: index.default
+      Runtime: nodejs16.x
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref TableName
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /emails
+            Method: post
+            RestApiId:
+              Ref: ApiGatewayApi
+      Timeout: 6
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TableName
+
+Outputs:
+
+  RegionalDomainName:
+    Value: !GetAtt CustomDomain.RegionalDomainName
+
+  RegionalHostedZoneId:
+    Value: !GetAtt CustomDomain.RegionalHostedZoneId

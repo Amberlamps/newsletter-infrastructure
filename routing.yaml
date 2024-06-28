@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Newsletter routing
+
+Resources:
+
+  NewsletterRouteUsEast1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A
+      AliasTarget:
+        DNSName: "d-c5wruohhsb.execute-api.us-east-1.amazonaws.com"
+        HostedZoneId: Z1UJRXOUMOOFQ8
+        EvaluateTargetHealth: true
+      Region: us-east-1
+      SetIdentifier: us-east-1
+
+  NewsletterRouteUsWest2:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A
+      AliasTarget:
+        DNSName: "d-s3kwtro03d.execute-api.us-west-2.amazonaws.com"
+        HostedZoneId: Z2OJLYMUO9EFXC
+        EvaluateTargetHealth: true
+      Region: us-west-2
+      SetIdentifier: us-west-2
+
+  NewsletterRouteEuWest1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A
+      AliasTarget:
+        DNSName: "d-3ipgmpb8ol.execute-api.eu-west-1.amazonaws.com"
+        HostedZoneId: ZLY8HYME6SFDD
+        EvaluateTargetHealth: true
+      Region: eu-west-1
+      SetIdentifier: eu-west-1
+
+  NewsletterRouteEuNorth1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A
+      AliasTarget:
+        DNSName: "d-zhj2iavx84.execute-api.eu-north-1.amazonaws.com"
+        HostedZoneId: Z3UWIKFBOOGXPP
+        EvaluateTargetHealth: true
+      Region: eu-north-1
+      SetIdentifier: eu-north-1
+
+  NewsletterRouteEuCentral1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A
+      AliasTarget:
+        DNSName: "d-uxsxdcff51.execute-api.eu-central-1.amazonaws.com"
+        HostedZoneId: Z1U9ULNL0V5AJ3
+        EvaluateTargetHealth: true
+      Region: eu-central-1
+      SetIdentifier: eu-central-1
+
+  NewsletterRouteApNortheast2:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A
+      AliasTarget:
+        DNSName: "d-qhgv0i2ox0.execute-api.ap-northeast-2.amazonaws.com"
+        HostedZoneId: Z20JF4UZKIW1U8
+        EvaluateTargetHealth: true
+      Region: ap-northeast-2
+      SetIdentifier: ap-northeast-2
+
+  NewsletterRouteApSoutheast1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z06986942ZUIA7VZCWSG0
+      Name: "newsletter-blog.taskli.st."
+      Type: A 
+      AliasTarget:
+        DNSName: "d-fq0w6zf1tk.execute-api.ap-southeast-1.amazonaws.com"
+        HostedZoneId: ZL327KTPIQFUL
+        EvaluateTargetHealth: true
+      Region: ap-southeast-1
+      SetIdentifier: ap-southeast-1

@@ -1,0 +1,46 @@
+{
+    "name": "newsletter-infrastructure",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "esbuild:api": "esbuild ./src/emails/index.ts --bundle --outdir=dist/emails --platform=node",
+        "sam:build:api": "sam build -t api.yaml",
+        "sam:deploy:api:us-east-1": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-us-east-1 --s3-prefix newsletter-blog-api --region us-east-1 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:us-east-1:292867823530:certificate/19b2d870-8af6-4b6d-93cb-1ddb92b7a8e2 DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "sam:deploy:api:us-west-2": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-us-west-2 --s3-prefix newsletter-blog-api --region us-west-2 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:us-west-2:292867823530:certificate/e4c87d6e-ec65-413d-9685-b03f83cd06d5 DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "sam:deploy:api:eu-west-1": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-eu-west-1 --s3-prefix newsletter-blog-api --region eu-west-1 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:eu-west-1:292867823530:certificate/6129a2e3-9709-4a04-ba38-0a8e55ee2151 DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "sam:deploy:api:eu-north-1": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-eu-north-1 --s3-prefix newsletter-blog-api --region eu-north-1 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:eu-north-1:292867823530:certificate/f8a03ab0-9699-4c47-9985-e2d9a152bf14 DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "sam:deploy:api:eu-central-1": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-eu-central-1 --s3-prefix newsletter-blog-api --region eu-central-1 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:eu-central-1:292867823530:certificate/a1702c63-3f64-4697-ab66-26c25c18c6c4 DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "sam:deploy:api:ap-northeast-2": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-ap-northeast-2 --s3-prefix newsletter-blog-api --region ap-northeast-2 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:ap-northeast-2:292867823530:certificate/42b6dc37-4bcf-4788-8e7e-d77f0c8cbb4c DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "sam:deploy:api:ap-southeast-1": "sam deploy --stack-name newsletter-blog-api --s3-bucket tasklist-infrastructure-ap-southeast-1 --s3-prefix newsletter-blog-api --region ap-southeast-1 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table RegionalCertificateArn=arn:aws:acm:ap-southeast-1:292867823530:certificate/7912b565-aea5-4cbd-ac48-c01bb0613ccf DomainName=newsletter-blog.taskli.st --no-fail-on-empty-changeset --profile work",
+        "deploy:api": "pnpm esbuild:api && pnpm sam:build:api && pnpm sam:deploy:api:us-east-1 && pnpm sam:deploy:api:us-west-2 && pnpm sam:deploy:api:eu-central-1 && pnpm sam:deploy:api:eu-west-1 && pnpm sam:deploy:api:eu-north-1 && pnpm sam:deploy:api:ap-northeast-2 && pnpm sam:deploy:api:ap-southeast-1",
+        "sam:build:table": "sam build -t table.yaml",
+        "sam:deploy:table": "sam deploy --stack-name newsletter-blog-table --s3-bucket tasklist-infrastructure-us-east-1 --s3-prefix newsletter-blog-table --region us-east-1 --capabilities CAPABILITY_IAM --parameter-overrides TableName=newsletter-blog-table --profile work",
+        "deploy:table": "pnpm sam:build:table && pnpm sam:deploy:table",
+        "sam:build:routing": "sam build -t routing.yaml",
+        "sam:deploy:routing": "sam deploy --stack-name newsletter-blog-routing --s3-bucket tasklist-infrastructure-us-east-1 --s3-prefix newsletter-blog-routing --region us-east-1 --capabilities CAPABILITY_IAM --profile work",
+        "deploy:routing": "pnpm sam:build:routing && pnpm sam:deploy:routing",
+        "create:bucket:us-east-1": "aws s3api create-bucket --bucket tasklist-infrastructure-us-east-1 --region us-east-1 --profile work",
+        "create:bucket:us-west-2": "aws s3api create-bucket --bucket tasklist-infrastructure-us-west-2 --region us-west-2 --profile work  --create-bucket-configuration LocationConstraint=us-west-2",
+        "create:bucket:eu-central-1": "aws s3api create-bucket --bucket tasklist-infrastructure-eu-central-1 --region eu-central-1 --profile work  --create-bucket-configuration LocationConstraint=eu-central-1",
+        "create:bucket:eu-west-1": "aws s3api create-bucket --bucket tasklist-infrastructure-eu-west-1 --region eu-west-1 --profile work  --create-bucket-configuration LocationConstraint=eu-west-1",
+        "create:bucket:eu-north-1": "aws s3api create-bucket --bucket tasklist-infrastructure-eu-north-1 --region eu-north-1 --profile work  --create-bucket-configuration LocationConstraint=eu-north-1",
+        "create:bucket:ap-northeast-2": "aws s3api create-bucket --bucket tasklist-infrastructure-ap-northeast-2 --region ap-northeast-2 --profile work  --create-bucket-configuration LocationConstraint=ap-northeast-2",
+        "create:bucket:ap-southeast-1": "aws s3api create-bucket --bucket tasklist-infrastructure-ap-southeast-1 --region ap-southeast-1 --profile work  --create-bucket-configuration LocationConstraint=ap-southeast-1",
+        "create:buckets": "concurrently \"pnpm:create:bucket:*\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.1319.0",
+        "esbuild": "^0.17.10",
+        "zod": "^3.20.6"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.110",
+        "@types/aws-sdk": "^2.7.0",
+        "@types/node": "^18.14.1",
+        "concurrently": "^7.6.0"
+    }
+}
